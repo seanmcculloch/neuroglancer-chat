@@ -1,14 +1,16 @@
 import os, json
 from typing import List, Dict
-from openai import OpenAI
+try:
+    from openai import OpenAI
+except ImportError:
+    OpenAI = None
 
 _API_KEY = os.getenv("OPENAI_API_KEY")
-#MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")  # Configurable via env var
 MODEL = os.getenv("OPENAI_MODEL", "gpt-5-nano")  # Configurable via env var
 
 client = None
-if _API_KEY:
-  client = OpenAI(api_key=_API_KEY)
+if _API_KEY and OpenAI is not None:
+    client = OpenAI(api_key=_API_KEY)
 
 SYSTEM_PROMPT = """
 You are Neuroglancer Chat, an assistant for neuroimaging data analysis and visualization.
